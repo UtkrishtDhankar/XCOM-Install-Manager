@@ -91,6 +91,9 @@ def PrettyFolderName(folderName):
     return folderName[len(startString) + len(connector):]
 
 def SwitchToMod(modName):
+    '''
+    Switches the folder layout of the parent folder to switch the default game folder (XEW) to match the mod named modName
+    '''
     global currentMod
 
     if modName == currentMod:
