@@ -7,8 +7,8 @@ XCOM Install Manager needs no installation. Your download should include a file 
 To use XCOM Install Manager, you'll need Python 2.7, which is available on all platforms XCOM Enemy Within is available for.
 
 ## Usage
-To use the Manager, for every install of XCOM Enemy Within that you have, rename them to something like `XEW - Long War` or `XEW - Vanilla` etc. You can also let one install be named simply as `XEW`.
+First off, you need to make multiple copies of the `XEW` folder inside your XCOM Enemy Unknown install folder. To do this, go to the folder where the game is installed (this can be done through Steam). The number of copies is up to you, depending on the number of seperate 'installs' you want to keep. Rename each copy something like, `XEW - Long War` or `XEW - Vanilla`. You can leave a single folder named as `XEW` (this is your default installation).
 
-Run the python script included. You might be prompted to enter the name of the currently default mod install (the mod currently in the `XEW` folder), or to enter a number for the default mod install to activate.
+Once you're done with that, you're all set. Run the script included (`xcom_install_manager.py`), and it'll sort through the folders, and scan them. It might ask you for a name for the default folder (the one named `XEW`).
 
-Whenever you want to change the mod that Steam launches, just open up this script, and type in the mod install that you want to activate, then simply launch the game from Steam.
+Once the script is done scanning the folders, whenever you want to change the installation you want to play, just fire up the script again and it'll give you a list of your installs. Type in the number of the install you want to play, and press enter. The script will exit. When you launch the game through Steam, the version you selected will be the one you launch.
