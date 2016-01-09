@@ -1,6 +1,6 @@
 import os, sys
 
-startString = 'XEW' # the string that a valid Xcom Enemu Within folder must start with
+startStrings = ['XEW', 'XComGame'] # the string that a valid Xcom Enemu Within folder must start with
 connector = ' - ' # the connector between startString and mod name
 
 launcherFolderName = '.XCOMLauncher'
@@ -12,16 +12,25 @@ dataFilePath = os.path.join(launcherFolderPath, dataFileName)
 currentFolderFileName = 'current'
 currentFolderFilePath = os.path.join(launcherFolderPath, currentFolderFileName)
 
+EUDataFileName = 'folders_EU'
+EUDataFilePath = os.path.join(launcherFolderPath, dataFileName)
+
+EUCurrentFolderFileName = 'current_EU'
+EUCurrentFolderFilePath = os.path.join(launcherFolderPath, currentFolderFileName)
+
 currentMod = ''
 modsList = []
 
+currentEUMod = ''
+EUModsList = []
+
 def IsXcomFolder(name):
     '''
-    Checks if the folder by the name is a valid Xcom Enemy Within folder (starts with XEW)
+    Checks if the folder by the name is a valid Xcom folder (starts with XEW or XComGame)
     Returns true if it is a valid folder, false otherwise
     '''
-    
-    if name[:len(startString)] == startString:
+
+    if name[:len(startStrings[0])] == startStrings[0] or name[:len(startStrings[1])] == startStrings[1]:
         return True
     else:
         return False
@@ -30,28 +39,40 @@ def scan():
     '''
     Scans the parent folder for directories which are Xcom directories and writes the directories to the data file.
     '''
-    
+
     # filter out the folders into xcomDirectories
     dirObjs = os.listdir(os.getcwd())
     directories = filter(os.path.isdir, dirObjs)
     xcomDirectories = filter(IsXcomFolder, directories)
 
-    # write to the data file in .XCOMLauncher 
+    # write to the data file in .XCOMLauncher
     if not os.path.exists(launcherFolderPath):
         os.makedirs(launcherFolderPath)
 
-    with open(dataFilePath, 'w') as dataFile:
+    with open(dataFilePath, 'w'), open(EUDataFilePath, 'w') as dataFile, EUDataFile:
         for xcomDir in xcomDirectories:
-            # if the directory name is the default name (the one launched by steam) ...
+            # if the directory name is the default name for Enemy Within (the one launched by steam) ...
             if xcomDir == 'XEW':
                 # then ask the user for the name of the mod. This will be written as the current mod
-                modName = raw_input('Detected default directory, please enter mod name: ')
+                modName = raw_input('Detected default directory for XCOM: Enemy Within, please enter mod name: ')
                 xcomDir = startString + connector + modName
 
                 with open(currentFolderFilePath, 'w') as currentFile:
                     currentFile.write(xcomDir)
-            
-            dataFile.write(xcomDir + '\n')
+
+            # if the directory name is the default name for Enemy Unknown (the one launched by steam) ...
+            elif xcomDir == 'XComGame':
+                # then ask the user for the name of the mod. This will be written as the current mod
+                modName = raw_input('Detected default directory for XCOM: Enemy Unknown, please enter mod name: ')
+                xcomDir = startString + connector + modName
+
+                with open(EUCurrentFolderFilePath, 'w') as currentFile:
+                    EUCurrentFile.write(xcomDir)
+
+            if isXEW(xcomDir):
+                dataFile.write(xcomDir + '\n')
+            else:
+                EUDataFile.write(xcomDir + '\n')
 
 def loadFolders():
     '''
@@ -79,7 +100,7 @@ def loadFolders():
         currentFile.close()
     except IOError:
         currentMod = ''
-        
+
     print currentMod
 
 def PrettyFolderName(folderName):
@@ -105,11 +126,11 @@ def SwitchToMod(modName):
     currentMod = modName
     with open(currentFolderFilePath, 'w') as currentFile:
         currentFile.write(currentMod)
-    
+
 
 def main():
     loadFolders()
-        
+
     print 'What mod do you want to make default?'
     for i, mod in zip(range(len(modsList)), modsList):
         print i, PrettyFolderName(mod)
