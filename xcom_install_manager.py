@@ -21,7 +21,7 @@ EUCurrentFolderFilePath = os.path.join(launcherFolderPath, currentFolderFileName
 currentMod = ''
 modsList = []
 
-currentEUMod = ''
+EUCurrentMod = ''
 EUModsList = []
 
 def IsXcomFolder(name):
@@ -81,6 +81,9 @@ def loadFolders():
     global modsList
     global currentMod
 
+    global EUModsList
+    global EUCurrentMod
+
     try:
         dataFile = open(dataFilePath, 'r')
     except IOError:
@@ -101,7 +104,27 @@ def loadFolders():
     except IOError:
         currentMod = ''
 
-    print currentMod
+    try:
+        EUDataFile = open(EUDataFilePath, 'r')
+    except IOError:
+        scan()
+        EUDataFile = open(EUDataFilePath, 'r')
+
+    for line in EUDataFile:
+        EUModsList += [line[:-1]] # stripping the last character (newline)
+    print modsList
+
+    EUDataFile.close()
+
+    try:
+        EUCurrentFile = open(EUCurrentFolderFilePath, 'r')
+        for line in EUCurrentFile:
+            EUCurrentMod = line
+        EUCurrentFile.close()
+    except IOError:
+        EUCurrentMod = ''
+
+    print EUCurrentMod
 
 def PrettyFolderName(folderName):
     '''
