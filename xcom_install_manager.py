@@ -1,6 +1,6 @@
 import os, sys
 
-startStrings = ['XEW', 'XComGame'] # the string that a valid Xcom Enemu Within folder must start with
+startStrings = ['XEW', 'XComGame'] # the strings that a valid Xcom folder must start with
 connector = ' - ' # the connector between startString and mod name
 
 launcherFolderName = '.XCOMLauncher'
@@ -23,6 +23,24 @@ modsList = []
 
 EUCurrentMod = ''
 EUModsList = []
+
+def isXEW(name):
+    '''
+    Returns true if folder is a valid XEW folder, false otherwise
+    '''
+    if name[:len(startStrings[0])] == startStrings[0]:
+        return True
+    else:
+        return False
+
+def isXEU(name):
+    '''
+    Returns true if folder is a valid XEU folder, false otherwise
+    '''
+    if name[:len(startStrings[1])] == startStrings[1]:
+        return True
+    else:
+        return False
 
 def IsXcomFolder(name):
     '''
@@ -131,8 +149,10 @@ def PrettyFolderName(folderName):
     Returns a prettyified folderName.
     e.g., returns 'Long War' for 'XEW - Long War' if startString is 'XEW' and connector is ' - '
     '''
-
-    return folderName[len(startString) + len(connector):]
+    if isXEW(folderName):
+        return folderName[len(startStrings[0]) + len(connector):]
+    else
+        return foldername[len(startStrings[1]) + len(connector):]
 
 def SwitchToMod(modName):
     '''
