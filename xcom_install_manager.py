@@ -159,18 +159,28 @@ def SwitchToMod(modName):
     Switches the folder layout of the parent folder to switch the default game folder (XEW) to match the mod named modName
     '''
     global currentMod
+    global EUCurrent
 
-    if modName == currentMod:
+    if modName == currentMod or modName == EUCurrentMod:
         return # already on modName, no need to do anything
-    elif currentMod != '':
-        os.rename('XEW', currentMod)
 
-    os.rename(modName, 'XEW')
-    currentMod = modName
-    with open(currentFolderFilePath, 'w') as currentFile:
-        currentFile.write(currentMod)
+    if isXEW(modName):
+        if currentMod != '':
+            os.rename('XEW', currentMod)
 
+        os.rename(modName, 'XEW')
+        currentMod = modName
+        with open(currentFolderFilePath, 'w') as currentFile:
+            currentFile.write(currentMod)
 
+    elif isXEU(modName):
+        if EUCurrentMod != '':
+            os.rename('XComGame', EUCurrentMod)
+
+        os.rename(modName, 'XComGame')
+        EUCurrentMod = modName
+        with open(EUCurrentFolderFilePath, 'w') as currentFile:
+            currentFile.write(EUCurrentMod)
 def main():
     loadFolders()
 
